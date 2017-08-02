@@ -10,9 +10,15 @@ class Post(models.Model):
     published_date = models.DateTimeField(
             blank=True, null=True)
 
+    def post_list(request):
+        posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+        return render(request, 'blog/pop_list.html',{'posts': posts})
+
     def publish(self):
         self.published_date = timezone.now()
         self.save()
 
     def __str__(self):
         return self.title
+
+#
